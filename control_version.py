@@ -88,7 +88,6 @@ def uso_data_hora():
 
 
 def to_printer():
-    print("to AQ1")
     doc = docx.Document()
     gettr = mylist.get(0, END)
     strr = ""
@@ -122,11 +121,11 @@ uso_data_hora()
 win = tk.Tk()
 
 win.geometry("400x500")
-win.config(bg="firebrick4")
+win.config(bg="lightgray")
 win.title("Palagio Software")
 
-logo = Label(text="PALAGIO",background="firebrick4",font=('Times New Roman',25,'bold')).pack(side=TOP, anchor=NW)
-logito = Label(text="Ordem de Rotinas",background="firebrick4",font=('Times New Roman',15,'bold')).pack(side=TOP, anchor=NW)
+#logo = Label(text="PALAGIO",background="lightgray",font=('Times New Roman',25,'bold')).pack(side=TOP, anchor=NW)
+logito = Label(text="Ordem de Rotinas",background="lightgray",font=('Times New Roman',15,'bold')).pack(side=TOP, anchor=NW)
 
 check_1 = False
 check_2 = False
@@ -177,10 +176,10 @@ def single_act():
 
     if check_2 == False:
         check_2 = True
-        single_act_frame = Frame(win, bg="firebrick4")
+        single_act_frame = Frame(win, bg="lightgray")
         single_act_frame.pack(side=TOP, anchor=NW, pady=10)
 
-        xxx = Button(single_act_frame, text="X", bg="black", fg="yellow", command=apg2).pack(side=RIGHT, anchor=N, pady=2,padx=2)
+        xxx = Button(single_act_frame, text="X", bg="lightgray", fg="black", command=apg2).pack(side=RIGHT, anchor=N, pady=2,padx=2)
         def user_eraser(e):
             novelty.delete(0, END)
             novelty.config(show="", font=('Times New Roman', 10, 'italic'), fg="black")
@@ -228,8 +227,8 @@ def single_act():
         novelty.bind("<FocusIn>", user_eraser)
         novelty.pack(side=RIGHT, anchor=NE, pady=2, padx=2)
 
-        Button(single_act_frame,text="Adicionar",background="yellow",command=new_jack).pack(pady=2)
-        Button(single_act_frame,text="Apagar",background="yellow",command=old_jack).pack(pady=2)
+        Button(single_act_frame,text="Adicionar",background="black",foreground="yellow",command=new_jack).pack(pady=2)
+        Button(single_act_frame,text="Apagar",background="black",foreground="yellow",command=old_jack).pack(pady=2)
 
         try:
             abrir_arquivo = open("machin", 'rb')
