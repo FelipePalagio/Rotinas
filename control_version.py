@@ -122,6 +122,7 @@ win = tk.Tk()
 
 win.geometry("400x500")
 win.config(bg="lightgray")
+win.iconbitmap("icone.ico")
 win.title("Palagio Software")
 
 #logo = Label(text="PALAGIO",background="lightgray",font=('Times New Roman',25,'bold')).pack(side=TOP, anchor=NW)
@@ -273,4 +274,3 @@ scroll_bar.pack(side=LEFT, fill=Y)
 
 scroll_bar.config(command=mylist.yview)
 win.mainloop()
-
