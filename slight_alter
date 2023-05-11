@@ -1,0 +1,277 @@
+from tkinter import *
+
+import docx
+from PIL import Image, ImageTk
+from datetime import *
+from itertools import count
+import pickle
+import tkinter as tk
+import os
+from docx.shared import Pt
+
+
+class ImageLabel(tk.Label):
+    """DISPLAY DE IMAGENS E GIFS"""
+
+    def load(self, im):
+        if isinstance(im, str):
+            im = Image.open(im)
+        self.loc = 0
+        self.frames = []
+
+        try:
+            for i in count(1):
+                self.frames.append(ImageTk.PhotoImage(im.copy()))
+                im.seek(i)
+        except EOFError:
+            pass
+
+        try:
+            self.delay = im.info['duration']
+        except:
+            self.delay = 100
+
+        if len(self.frames) == 1:
+            self.config(image=self.frames[0])
+        else:
+            self.next_frame()
+
+    def unload(self):
+        self.config(image="")
+        self.frames = None
+
+    def next_frame(self):
+        if self.frames:
+            self.loc += 1
+            self.loc %= len(self.frames)
+            self.config(image=self.frames[self.loc])
+            self.after(self.delay, self.next_frame)
+
+
+
+
+
+
+
+
+
+global windowszs
+
+
+
+
+
+def uso_data_hora():
+    def to_pickle(meus_dados):
+        x = meus_dados
+        arquivo_atlz = open('dados_uso', 'wb')
+        pickle.dump(x, arquivo_atlz)
+        arquivo_atlz.close()
+
+    gabagul = []
+    agora = datetime.now()
+    data_hora = agora.strftime("%d/%m/%Y %H:%M:%S")
+
+    try:
+        abrir_arquivo = open('dados_uso', 'rb')
+        past_usage = pickle.load(abrir_arquivo)
+        abrir_arquivo.close()
+        for i in past_usage:
+            gabagul.append(i)
+    except FileNotFoundError:
+        to_pickle(gabagul)
+
+
+    gabagul.append(data_hora)
+
+    to_pickle(gabagul)
+
+
+def to_printer():
+    doc = docx.Document()
+    gettr = mylist.get(0, END)
+    strr = ""
+    for i in gettr:
+        x = "\n" + i
+        strr += x
+        strr += " [ ]"
+
+    p = doc.add_paragraph().add_run("Ordem de Rotinas:")
+    p.font.size = Pt(25)
+    para = doc.add_paragraph().add_run(strr)
+    para.font.size = Pt(25)
+    doc.save('dados_rotinas.docx')
+    os.startfile("dados_rotinas.docx", "print")
+
+
+
+
+def del_ete():
+    mylist.delete(0, END)
+
+
+def del_dlast():
+    selected_checkboxs = mylist.curselection()
+
+    for selected_checkbox in selected_checkboxs[::-1]:
+        mylist.delete(selected_checkbox)
+
+
+uso_data_hora()
+win = tk.Tk()
+
+win.geometry("400x500")
+win.config(bg="firebrick")
+win.iconbitmap("icone.ico")
+win.title("Palagio Software")
+
+#logo = Label(text="PALAGIO",background="lightgray",font=('Times New Roman',25,'bold')).pack(side=TOP, anchor=NW)
+logito = Label(text="Ordem de Rotinas",background="black",foreground="firebrick",font=('Times New Roman',15,'bold')).pack(side=TOP, anchor=NW)
+
+check_1 = False
+check_2 = False
+
+
+
+
+
+def single_act():
+    def creation(objs):
+        try:
+            mylist.insert(END, objs)
+        except NameError:
+            print("ERRO 002")
+
+    class actions:
+        def axe(self, obj):
+            Button(single_act_frame, text=obj,background="black",foreground="yellow", command=lambda: creation(obj)).pack(pady=2)
+
+    global viz
+    global check_2
+    global check_3
+
+    def apg2():
+        global viz
+        global check_2
+        single_act_frame.destroy()
+        try:
+            viz.destroy()
+        except NameError:
+            pass
+        check_2 = False
+
+    def apg3():
+        global viz
+        global check_2
+        single_act_frame.destroy()
+        try:
+            viz.destroy()
+        except NameError:
+            pass
+        check_2 = False
+        single_act()
+
+
+
+    actsz = actions()
+
+    if check_2 == False:
+        check_2 = True
+        single_act_frame = Frame(win, bg="lightgray")
+        single_act_frame.pack(side=TOP, anchor=NW, pady=10)
+
+        xxx = Button(single_act_frame, text="X", bg="lightgray", fg="black", command=apg2).pack(side=RIGHT, anchor=N, pady=2,padx=2)
+        def user_eraser(e):
+            novelty.delete(0, END)
+            novelty.config(show="", font=('Times New Roman', 10, 'italic'), fg="black")
+
+        def new_jack():
+            def to_pickle(meus_dados):
+                x = meus_dados
+                arquivo_atlz = open("machin", 'wb')
+                pickle.dump(x, arquivo_atlz)
+                arquivo_atlz.close()
+            scc = novelty.get()
+            if scc == "novo...":
+                pass
+            elif scc == "":
+                pass
+            else:
+                novos_dados.append(scc)
+                to_pickle(novos_dados)
+
+
+            apg3()
+
+        def old_jack():
+            def to_pickle(meus_dados):
+                x = meus_dados
+                arquivo_atlz = open("machin", 'wb')
+                pickle.dump(x, arquivo_atlz)
+                arquivo_atlz.close()
+            scc = novelty.get()
+            for i in novos_dados:
+                if i == scc:
+                    novos_dados.remove(scc)
+                    to_pickle(novos_dados)
+            apg3()
+
+        def to_pickle(meus_dados):
+            x = meus_dados
+            arquivo_atlz = open("machin", 'wb')
+            pickle.dump(x, arquivo_atlz)
+            arquivo_atlz.close()
+
+
+        novelty = Entry(single_act_frame, font=('Times New Roman', 10, 'italic'), fg="grey", bg="white")
+        novelty.insert(0, "novo...", )
+        novelty.bind("<FocusIn>", user_eraser)
+        novelty.pack(side=RIGHT, anchor=NE, pady=2, padx=2)
+
+        Button(single_act_frame,text="Adicionar",background="black",foreground="yellow",command=new_jack).pack(pady=2)
+        Button(single_act_frame,text="Apagar",background="black",foreground="yellow",command=old_jack).pack(pady=2)
+
+        try:
+            abrir_arquivo = open("machin", 'rb')
+        except FileNotFoundError:
+            novos_dados = []
+            to_pickle(novos_dados)
+            abrir_arquivo = open("machin", 'rb')
+
+        novos_dados = pickle.load(abrir_arquivo)
+        abrir_arquivo.close()
+        for i in novos_dados:
+            actsz.axe(i)
+
+
+
+
+
+    else:
+        pass
+
+
+# rotinas_salvas = Button(win, text="Rotinas Salvas", command=saved_rot)
+# rotinas_salvas.pack(side=TOP, anchor=NW, pady=10)
+
+novo_proc = Button(win, text="Máquinas", bg="yellow", fg="black", command=single_act)
+novo_proc.pack(side=TOP, anchor=NW, pady=10)
+
+prit = Button(win, text="IMPRIMIR LISTA", bg="yellow", fg="black", command=to_printer)
+prit.pack(side=TOP, anchor=NW, pady=0.1)
+
+del_et = Button(win, text="DELETAR TUDO NA LISTA", bg="black", fg="white", command=del_ete)
+del_et.pack(side=TOP, anchor=NW, pady=0.1)
+
+del_last = Button(win, text="DELETAR ITEM SELECIONADO NA LISTA", bg="black", fg="white", command=del_dlast)
+del_last.pack(side=TOP, anchor=NW, pady=0.1)
+
+scroll_bar = Scrollbar(win)
+mylist = Listbox(win, yscrollcommand=scroll_bar.set, selectmode=MULTIPLE)
+
+mylist.pack(side=LEFT, fill=BOTH)
+scroll_bar.pack(side=LEFT, fill=Y)
+
+scroll_bar.config(command=mylist.yview)
+print("oh no somethings diffs")
+win.mainloop()
